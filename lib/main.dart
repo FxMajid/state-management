@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           )
         ]),
         appBar: AppBar(
-          title: Text("BLoC tanpa Library"),
+          title: Text("BLoC"),
         ),
         body: Center(
           child: StreamBuilder(
