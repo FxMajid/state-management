@@ -51,8 +51,8 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               return AnimatedContainer(
                 duration: Duration(milliseconds: 500),
-                width: 200,
-                height: 200,
+                width: 300,
+                height: 300,
                 color: snapshot.data,
               );
             },
