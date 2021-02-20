@@ -1,60 +1,64 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:state_management/application_color.dart';
+import 'package:state_management/color_bloc.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ColorBloc bloc = ColorBloc();
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: ChangeNotifierProvider<ApplicationColor>(
-          create: (_) => ApplicationColor(),
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              title: Consumer<ApplicationColor>(
-                builder: (context, applicationColor, _) => Text(
-                  "Provider State Management",
-                  style: TextStyle(color: applicationColor.color),
-                ),
-              ),
-            ),
-            body: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                  Consumer<ApplicationColor>(
-                    builder: (context, applicationColor, _) =>
-                        AnimatedContainer(
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      color: applicationColor.color,
-                      duration: Duration(milliseconds: 500),
-                    ),
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(margin: EdgeInsets.all(5), child: Text("AB")),
-                        Consumer<ApplicationColor>(
-                          builder: (context, applicationColor, _) => Switch(
-                            value: applicationColor.isLightBlue,
-                            onChanged: (newValue) {
-                              applicationColor.isLightBlue = newValue;
-                            },
-                          ),
-                        ),
-                        Container(margin: EdgeInsets.all(5), child: Text("LB")),
-                      ])
-                ])),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        floatingActionButton:
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+          FloatingActionButton(
+            onPressed: () {
+              bloc.evenSink.add(ColorEvent.to_amber);
+            },
+            backgroundColor: Colors.amber,
           ),
-        ));
+          SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              bloc.evenSink.add(ColorEvent.to_light_blue);
+            },
+            backgroundColor: Colors.lightBlue,
+          )
+        ]),
+        appBar: AppBar(
+          title: Text("BLoC Flutter"),
+        ),
+        body: Center(
+          child: StreamBuilder(
+            stream: bloc.stateStream,
+            initialData: Colors.amber,
+            builder: (context, snapshot) {
+              return AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                width: 200,
+                height: 200,
+                color: snapshot.data,
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
