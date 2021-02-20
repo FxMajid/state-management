@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/color_bloc.dart';
+import 'package:state_management/BLoC/color_bloc.dart';
 
 void main() {
   runApp(MyApp());
