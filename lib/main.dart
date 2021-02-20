@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           )
         ]),
         appBar: AppBar(
-          title: Text("BLoC"),
+          title: Text("BLoC Flutter"),
         ),
         body: Center(
           child: StreamBuilder(
